@@ -967,10 +967,17 @@ def update_graph(person, year, person_list_in, years_list_in):
     fig5.add_trace(go.Indicator(
         mode="number+delta",
         value=highest_rating['rating'][0],
+        name=highest_rating["movie"][0],
         domain={'row': 1, 'column': 1}))
     try:
         if person is not None and person != []:
-            movie_name = f'{highest_rating["movie"][0]}<br><span style="font-size:0.4em;color:gray">Highest rated Movie VS Average of all\n{person} Movies</span><br><span style="font-size:0.6em;color:gray"></span>'
+            m_name = highest_rating["movie"][0]
+            if len(m_name) > 20:
+                m_name = f'<span style="font-size:0.6em;color:gray">{m_name}</span>' \
+                         f'<br><span style="font-size:0.4em;color:gray">Highest rated Movie VS Average of all\n{person} Movies</span><br><span style="font-size:0.6em;color:gray"></span>'
+            else:
+                m_name = highest_rating["movie"][0]
+            movie_name = m_name
         else:
             movie_name = f'{highest_rating["movie"][0]}<br><span style="font-size:0.6em;color:gray">Highest rated Movie VS Average of all Movies</span><br>'
     except:
@@ -980,6 +987,7 @@ def update_graph(person, year, person_list_in, years_list_in):
         template={'data': {'indicator': [{
             'title': {"text": movie_name, 'font': {'size': 45}},
             'mode': "number+delta+gauge",
+            'customdata': [highest_rating["movie"][0]],
             'delta': {'reference': avg_rating}}]
         }})
 
@@ -996,6 +1004,7 @@ def update_graph(person, year, person_list_in, years_list_in):
         'plot_bgcolor': 'rgba(0, 0, 0, 0)',
         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
     })
+
 
 
 
@@ -1077,6 +1086,17 @@ def update_graph(person, year, person_list_in, years_list_in):
         if person == []:
             fig.update_traces(branchvalues='remainder')
 
+    if year is None:
+        if person is None:
+            fig.update_traces(branchvalues='total')
+            fig2.update_yaxes(range=[0, 60])
+
+        else:
+            fig.update_traces(branchvalues='remainder')
+
+    if year is None and person is None:
+        select_years = sorted(years, reverse=True)
+        person_list_update = sorted(person_list)
 
 
 
