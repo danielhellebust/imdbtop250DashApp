@@ -1098,7 +1098,9 @@ def update_graph(person, year, person_list_in, years_list_in):
         select_years = sorted(years, reverse=True)
         person_list_update = sorted(person_list)
 
-
+    if type(person) is str:
+        fig.update_traces(branchvalues='remainder')
+        fig2.update_yaxes(range=[0, 252])
 
     # if person is None :
     #     if year == []:
